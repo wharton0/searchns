@@ -1,0 +1,30 @@
+# Rust
+/target/
+**/*.rs.bk
+Cargo.lock
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build artifacts
+*.exe
+*.pdb
+
+# Test files
+test_*.xlsx
+test_*.xls
+search_results_*.txt
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp

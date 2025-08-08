@@ -1,0 +1,25 @@
+[package]
+name = "excel-serial-search"
+version = "1.3.0"
+edition = "2021"
+authors = ["Wharton Wang"]
+description = "A high-performance Excel serial number search tool"
+license = "MIT"
+repository = "https://github.com/your-username/excel-serial-search"
+keywords = ["excel", "search", "xlsx", "xls", "serial"]
+categories = ["command-line-utilities", "text-processing"]
+build = "build.rs"
+
+# 在 Cargo.toml 中添加:
+[dependencies]
+calamine = "0.22"
+chrono = { version = "0.4", features = ["serde"] }
+
+[profile.release]
+opt-level = "z"
+lto = true
+strip = true
+codegen-units = 1
+
+[build-dependencies]
+winres = "0.1"
