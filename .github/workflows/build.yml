@@ -59,14 +59,34 @@ jobs:
     - name: Run tests
       run: cargo test --verbose
 
-    - name: Build release
+    - name: Build release (recursive search)
       run: cargo build --release --target ${{ matrix.target }}
 
-    - name: Upload artifact
+    - name: Build release (current dir only)
+      run: cargo build --release --target ${{ matrix.target }} --no-default-features --features current-dir-only
+
+    - name: Rename artifacts
+      shell: bash
+      run: |
+        if [[ "${{ matrix.os }}" == "windows-latest" ]]; then
+          cp target/${{ matrix.target }}/release/${{ matrix.artifact_name }} target/${{ matrix.target }}/release/excel-serial-search-recursive.exe
+          cp target/${{ matrix.target }}/release/${{ matrix.artifact_name }} target/${{ matrix.target }}/release/excel-serial-search-current-dir.exe
+        else
+          cp target/${{ matrix.target }}/release/${{ matrix.artifact_name }} target/${{ matrix.target }}/release/excel-serial-search-recursive
+          cp target/${{ matrix.target }}/release/${{ matrix.artifact_name }} target/${{ matrix.target }}/release/excel-serial-search-current-dir
+        fi
+
+    - name: Upload recursive search artifact
       uses: actions/upload-artifact@v3
       with:
-        name: ${{ matrix.asset_name }}
-        path: target/${{ matrix.target }}/release/${{ matrix.artifact_name }}
+        name: ${{ matrix.asset_name }}-recursive
+        path: target/${{ matrix.target }}/release/excel-serial-search-recursive${{ matrix.os == 'windows-latest' && '.exe' || '' }}
+
+    - name: Upload current dir only artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${{ matrix.asset_name }}-current-dir
+        path: target/${{ matrix.target }}/release/excel-serial-search-current-dir${{ matrix.os == 'windows-latest' && '.exe' || '' }}
 
   release:
     needs: build
@@ -81,10 +101,33 @@ jobs:
       uses: softprops/action-gh-release@v1
       with:
         files: |
-          excel-serial-search-linux-x86_64/excel-serial-search
-          excel-serial-search-windows-x86_64.exe/excel-serial-search.exe
-          excel-serial-search-macos-x86_64/excel-serial-search
+          excel-serial-search-linux-x86_64-recursive/excel-serial-search-recursive
+          excel-serial-search-linux-x86_64-current-dir/excel-serial-search-current-dir
+          excel-serial-search-windows-x86_64.exe-recursive/excel-serial-search-recursive.exe
+          excel-serial-search-windows-x86_64.exe-current-dir/excel-serial-search-current-dir.exe
+          excel-serial-search-macos-x86_64-recursive/excel-serial-search-recursive
+          excel-serial-search-macos-x86_64-current-dir/excel-serial-search-current-dir
         draft: false
         prerelease: false
+        body: |
+          ## 🎉 Excel 序列号查询工具 v1.4.0
+
+          ### 🆕 新功能
+          - 🔧 **Feature Flags 支持**: 通过编译选项控制搜索范围
+          - 📁 **两种搜索模式**:
+            - **递归搜索版本** (`recursive`): 搜索当前目录及所有子目录
+            - **当前目录版本** (`current-dir`): 仅搜索当前目录，速度更快
+
+          ### 📦 下载说明
+          - `excel-serial-search-recursive`: 递归搜索版本（推荐）
+          - `excel-serial-search-current-dir`: 仅当前目录搜索版本
+
+          ### 🚀 使用方法
+          下载对应平台的可执行文件，放在包含 Excel 文件的目录中运行即可。
+
+          ### 📋 支持的平台
+          - Windows x86_64
+          - Linux x86_64  
+          - macOS x86_64
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

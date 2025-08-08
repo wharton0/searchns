@@ -25,7 +25,7 @@ impl ExcelSearcher {
         }
     }
 
-    // 获取目录下所有Excel文件（包括子目录）
+    // 获取目录下所有Excel文件（根据 feature flag 决定是否包括子目录）
     fn get_excel_files(&self) -> io::Result<Vec<PathBuf>> {
         let mut excel_files = Vec::new();
         
@@ -40,7 +40,7 @@ impl ExcelSearcher {
         Ok(excel_files)
     }
 
-    // 递归扫描目录
+    // 扫描目录（根据 feature flag 决定是否递归）
     fn scan_directory(&self, dir: &Path, excel_files: &mut Vec<PathBuf>) -> io::Result<()> {
         for entry in fs::read_dir(dir)? {
             let entry = entry?;
@@ -54,8 +54,11 @@ impl ExcelSearcher {
                     }
                 }
             } else if path.is_dir() {
-                // 递归扫描子目录
-                self.scan_directory(&path, excel_files)?;
+                // 根据 feature flag 决定是否递归扫描子目录
+                #[cfg(feature = "recursive-search")]
+                {
+                    self.scan_directory(&path, excel_files)?;
+                }
             }
         }
         Ok(())
@@ -195,7 +198,12 @@ impl ExcelSearcher {
         let mut all_results = Vec::new();
 
         if excel_files.is_empty() {
+            #[cfg(feature = "recursive-search")]
             println!("⚠️  在目录 {} 及其子目录中未找到Excel文件", self.search_directory.display());
+            
+            #[cfg(feature = "current-dir-only")]
+            println!("⚠️  在目录 {} 中未找到Excel文件", self.search_directory.display());
+            
             return Ok(all_results);
         }
 
@@ -267,9 +275,15 @@ fn get_user_input(prompt: &str) -> String {
 // 显示程序信息
 fn show_header() {
     println!("{}", "=".repeat(60));
-    println!("🔎 Excel 序列号查询工具 v1.3");
+    println!("🔎 Excel 序列号查询工具 v1.4");
     println!("🚀 支持 .xlsx 和 .xls 格式文件");
+    
+    #[cfg(feature = "recursive-search")]
     println!("📁 自动在当前目录及其子目录中搜索");
+    
+    #[cfg(feature = "current-dir-only")]
+    println!("📁 仅在当前目录中搜索（不包括子目录）");
+    
     println!("📊 显示表头列名而非列号");
     println!("{}", "=".repeat(60));
 }

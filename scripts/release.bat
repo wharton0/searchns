@@ -40,12 +40,24 @@ if errorlevel 1 (
 )
 
 :: 构建发布版本
-echo 🔨 构建发布版本...
+echo 🔨 构建递归搜索版本...
 cargo build --release
 if errorlevel 1 (
-    echo ❌ 构建失败
+    echo ❌ 递归搜索版本构建失败
     exit /b 1
 )
+
+echo 🔨 构建仅当前目录版本...
+cargo build --release --no-default-features --features current-dir-only
+if errorlevel 1 (
+    echo ❌ 仅当前目录版本构建失败
+    exit /b 1
+)
+
+echo 📦 复制可执行文件...
+copy target\release\excel-serial-search.exe excel-serial-search-current-dir.exe
+cargo build --release
+copy target\release\excel-serial-search.exe excel-serial-search-recursive.exe
 
 :: 提交更改
 echo 📤 提交版本更新...
