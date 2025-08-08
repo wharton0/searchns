@@ -1,5 +1,5 @@
 [package]
-name = "excel-serial-search"
+name = "searchns"
 version = "1.4.0"
 edition = "2021"
 authors = ["Wharton Wang"]
@@ -27,3 +27,7 @@ codegen-units = 1
 
 [build-dependencies]
 winres = "0.1"
+embed-resource = "2.4"
+
+[target.'cfg(windows)'.build-dependencies]
+winapi = { version = "0.3", features = ["winnt"] }

@@ -134,6 +134,7 @@ excel-serial-search/
 - **语言**: Rust
 - **Excel 处理**: [calamine](https://crates.io/crates/calamine) - 高性能 Excel 文件读取库
 - **时间处理**: [chrono](https://crates.io/crates/chrono) - 日期时间处理
+- **Windows 资源**: [winres](https://crates.io/crates/winres) - Windows 应用图标和信息嵌入
 
 ## 📈 性能特点
 

@@ -28,3 +28,6 @@ search_results_*.txt
 # Temporary files
 *.tmp
 *.temp
+
+# Generated files
+icon_preview.png
