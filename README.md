@@ -22,7 +22,7 @@
 
 ```bash
 # 克隆仓库
-git clone https://github.com/your-username/excel-serial-search.git
+git clone https://github.com/wharton0/excel-serial-search.git
 cd excel-serial-search
 
 # 编译项目
@@ -34,7 +34,7 @@ cargo run
 
 ### 直接下载可执行文件
 
-从 [Releases](https://github.com/your-username/excel-serial-search/releases) 页面下载对应平台的可执行文件。
+从 [Releases](https://github.com/wharton0/excel-serial-search/releases) 页面下载对应平台的可执行文件。
 
 ## 🚀 使用方法
 
