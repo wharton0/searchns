@@ -4,26 +4,37 @@
 
 本项目已配置了应用图标和详细的应用信息，在 Windows 平台编译时会自动嵌入到可执行文件中。
 
-## ✅ 最终配置状态
+## ✅ 最终配置状态 - 完全成功！🎉
 
-### 图标嵌入成功 🎉
+### 应用信息嵌入 ✅
+- **产品名称**: Excel Serial Search Tool
+- **文件描述**: Excel Serial Number Search Tool
+- **公司名称**: Wharton Wang
+- **文件版本**: 1.4.0.0
+- **产品版本**: 1.4.0.0
+- **版权信息**: Copyright (C) 2025 Wharton Wang
+- **原始文件名**: searchns.exe
+- **备注**: A high-performance Excel serial number search tool
+
+### 图标嵌入 ✅
 - **源文件**: `icon.ico` (241,726 字节)
-- **目标文件**: `target/release/searchns.exe`
+- **目标文件**: `target/release/searchns.exe` (894 KB)
 - **嵌入状态**: ✅ 成功
 - **显示尺寸**: 32x32 像素
-- **文件资源管理器**: ✅ 显示自定义图标
+- **资源检测**: ✅ 通过 Windows API 验证
 
-### 构建配置
-- **构建脚本**: `build.rs` - 简化配置，专注图标嵌入
-- **依赖库**: `winres = "0.1"` - Windows 资源编译
-- **构建过程**: 无错误，显示成功消息
+### 成功的构建配置
+- **方法**: embed-resource + app.rc (传统 Windows 资源文件)
+- **构建脚本**: `build.rs` - 使用 embed-resource 库
+- **资源文件**: `app.rc` - 标准 Windows 资源定义
+- **依赖库**: `embed-resource = "2.4"` + `winres = "0.1"`
 
-### 验证结果
-- ✅ 编译成功: `cargo build --release`
-- ✅ 图标嵌入: 构建日志显示 "Successfully embedded icon"
-- ✅ 文件生成: `target/release/searchns.exe` (656 KB)
-- ✅ 图标显示: 在文件资源管理器中可见自定义图标
-- ✅ 程序运行: 功能正常
+### 完整验证结果
+- ✅ 编译成功: 无错误或警告
+- ✅ 应用信息: 所有字段正确显示
+- ✅ 图标嵌入: 通过 Windows API 和 PowerShell 验证
+- ✅ 文件生成: `target/release/searchns.exe` (894 KB)
+- ✅ 程序功能: 正常启动和运行
 
 ## 🔧 构建配置
 

@@ -82,6 +82,9 @@ impl ExcelSearcher {
     fn search_xlsx_file(&self, file_path: &Path, serial_number: &str, file_name: &str) -> Vec<SearchResult> {
         let mut results = Vec::new();
         
+        // 将搜索的序列号转换为小写，实现不区分大小写搜索
+        let serial_number_lower = serial_number.to_lowercase();
+        
         if let Ok(mut workbook) = open_workbook::<Xlsx<_>, _>(file_path) {
             let sheet_names = workbook.sheet_names().to_owned();
             
@@ -99,7 +102,10 @@ impl ExcelSearcher {
                     
                     // 在工作表中搜索（从第二行开始，跳过表头）
                     for (row_idx, row) in rows.iter().enumerate().skip(1) {
-                        if row.iter().any(|cell| self.cell_to_string(cell).contains(serial_number)) {
+                        // 不区分大小写搜索：将单元格内容转换为小写后比较
+                        if row.iter().any(|cell| {
+                            self.cell_to_string(cell).to_lowercase().contains(&serial_number_lower)
+                        }) {
                             let row_data: Vec<String> = row.iter()
                                 .map(|cell| self.cell_to_string(cell))
                                 .collect();
@@ -125,6 +131,9 @@ impl ExcelSearcher {
     fn search_xls_file(&self, file_path: &Path, serial_number: &str, file_name: &str) -> Vec<SearchResult> {
         let mut results = Vec::new();
         
+        // 将搜索的序列号转换为小写，实现不区分大小写搜索
+        let serial_number_lower = serial_number.to_lowercase();
+        
         if let Ok(mut workbook) = open_workbook::<Xls<_>, _>(file_path) {
             let sheet_names = workbook.sheet_names().to_owned();
             
@@ -142,7 +151,10 @@ impl ExcelSearcher {
                     
                     // 在工作表中搜索（从第二行开始，跳过表头）
                     for (row_idx, row) in rows.iter().enumerate().skip(1) {
-                        if row.iter().any(|cell| self.cell_to_string(cell).contains(serial_number)) {
+                        // 不区分大小写搜索：将单元格内容转换为小写后比较
+                        if row.iter().any(|cell| {
+                            self.cell_to_string(cell).to_lowercase().contains(&serial_number_lower)
+                        }) {
                             let row_data: Vec<String> = row.iter()
                                 .map(|cell| self.cell_to_string(cell))
                                 .collect();
@@ -275,7 +287,7 @@ fn get_user_input(prompt: &str) -> String {
 // 显示程序信息
 fn show_header() {
     println!("{}", "=".repeat(60));
-    println!("🔎 Excel 序列号查询工具 v1.4");
+    println!("🔎 Excel 序列号查询工具 v1.5");
     println!("🚀 支持 .xlsx 和 .xls 格式文件");
     
     #[cfg(feature = "recursive-search")]
@@ -285,6 +297,7 @@ fn show_header() {
     println!("📁 仅在当前目录中搜索（不包括子目录）");
     
     println!("📊 显示表头列名而非列号");
+    println!("🔤 支持不区分大小写搜索");
     println!("{}", "=".repeat(60));
 }
 

@@ -5,8 +5,8 @@
 
 // 版本信息资源
 1 VERSIONINFO
-FILEVERSION 1,4,0,0
-PRODUCTVERSION 1,4,0,0
+FILEVERSION 1,5,0,0
+PRODUCTVERSION 1,5,0,0
 FILEFLAGSMASK VS_FFI_FILEFLAGSMASK
 FILEFLAGS 0x0L
 FILEOS VOS__WINDOWS32
@@ -19,13 +19,13 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "Wharton Wang"
             VALUE "FileDescription", "Excel Serial Number Search Tool"
-            VALUE "FileVersion", "1.4.0.0"
+            VALUE "FileVersion", "1.5.0.0"
             VALUE "InternalName", "searchns"
             VALUE "LegalCopyright", "Copyright (C) 2025 Wharton Wang"
             VALUE "OriginalFilename", "searchns.exe"
             VALUE "ProductName", "Excel Serial Search Tool"
-            VALUE "ProductVersion", "1.4.0.0"
-            VALUE "Comments", "A high-performance Excel serial number search tool"
+            VALUE "ProductVersion", "1.5.0.0"
+            VALUE "Comments", "A high-performance Excel serial number search tool with case-insensitive search"
         END
     END
     BLOCK "VarFileInfo"
